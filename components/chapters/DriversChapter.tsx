@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, memo } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { RichText } from "./RichText";
@@ -20,12 +20,19 @@ const fadeUp = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
 };
 
+function driverAvatarFallback(fullName: string): string {
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=333&color=fff&size=80`;
+}
+
 function DriversChapterInner() {
   const [year, setYear] = useState(CURRENT_YEAR);
   const [standings, setStandings] = useState<DriverStanding[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const imgFallbacks = useRef<Set<string>>(new Set());
+  /** Next.js Image controls `src`; use state for fallback instead of mutating the DOM in onError */
+  const [headshotFallbackByAcronym, setHeadshotFallbackByAcronym] = useState<Record<string, true>>(
+    {}
+  );
 
   const loadStandings = useCallback((y: number) => {
     setLoading(true);
@@ -150,9 +157,10 @@ function DriversChapterInner() {
                   </span>
                   <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden ring-2 ring-white/15">
                     <Image
+                      key={`${year}-${s.driver.name_acronym}-${headshotFallbackByAcronym[s.driver.name_acronym] ? "fb" : "hd"}`}
                       src={
-                        imgFallbacks.current.has(s.driver.name_acronym)
-                          ? `https://ui-avatars.com/api/?name=${encodeURIComponent(s.driver.full_name)}&background=333&color=fff&size=80`
+                        headshotFallbackByAcronym[s.driver.name_acronym]
+                          ? driverAvatarFallback(s.driver.full_name)
                           : s.driver.headshot_url
                       }
                       alt={s.driver.full_name}
@@ -161,12 +169,12 @@ function DriversChapterInner() {
                       sizes="(max-width: 640px) 48px, 56px"
                       unoptimized
                       loading="lazy"
-                      onError={(e) => {
-                        if (!imgFallbacks.current.has(s.driver.name_acronym)) {
-                          imgFallbacks.current.add(s.driver.name_acronym);
-                          const target = e.currentTarget;
-                          target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(s.driver.full_name)}&background=333&color=fff&size=80`;
-                        }
+                      onError={() => {
+                        setHeadshotFallbackByAcronym((prev) =>
+                          prev[s.driver.name_acronym]
+                            ? prev
+                            : { ...prev, [s.driver.name_acronym]: true }
+                        );
                       }}
                     />
                   </div>

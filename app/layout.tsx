@@ -15,26 +15,26 @@ const orbitron = Orbitron({
 });
 
 export const metadata: Metadata = {
-  title: "INSIDE F1 | Explore the Engineering Behind the Fastest Sport",
+  title: "Inside F1 — Interactive 3D Formula 1 Demo",
   description:
-    "Explore the engineering, drivers, teams and rules behind the fastest sport on earth. Interactive 3D F1 car, aerodynamics, DRS, and more.",
-  keywords: ["Formula 1", "F1", "motorsport", "engineering", "racing", "interactive"],
-  authors: [{ name: "INSIDE F1" }],
+    "Demo project: explore F1 engineering with an interactive 3D car, aerodynamics, DRS, drivers, and teams.",
+  keywords: ["Formula 1", "F1", "motorsport", "engineering", "racing", "Three.js", "demo"],
+  authors: [{ name: "Om Gupta" }],
   openGraph: {
-    title: "INSIDE F1 | Explore the Engineering Behind the Fastest Sport",
+    title: "Inside F1 — Interactive 3D Formula 1 Demo",
     description:
-      "Explore the engineering, drivers, teams and rules behind the fastest sport on earth.",
+      "Explore F1 engineering with an interactive 3D car, aerodynamics, DRS, drivers, and teams.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "INSIDE F1 | Explore the Engineering Behind the Fastest Sport",
+    title: "Inside F1 — Interactive 3D Formula 1 Demo",
     description:
-      "Explore the engineering, drivers, teams and rules behind the fastest sport on earth.",
+      "Explore F1 engineering with an interactive 3D car, aerodynamics, DRS, drivers, and teams.",
   },
   robots: {
-    index: true,
-    follow: true,
+    index: false,
+    follow: false,
   },
 };
 

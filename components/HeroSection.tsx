@@ -18,6 +18,7 @@ import { CarPartTooltip } from "./CarPartTooltip";
 import { ToolBar, IconExplode, IconAirflow, IconDRS } from "./ToolBar";
 import { ChapterContent } from "./chapters/ChapterContent";
 import { LoadingScreen } from "./LoadingScreen";
+import { SceneErrorBoundary } from "./SceneErrorBoundary";
 import { goToChapter, goToOverview } from "@/utils/cameraControls";
 import { chapters } from "@/data/chapters";
 
@@ -108,7 +109,9 @@ function HeroContent() {
   return (
     <>
       <LoadingScreen />
-      <Scene />
+      <SceneErrorBoundary>
+        <Scene />
+      </SceneErrorBoundary>
 
       {/* Subtle gradient overlay */}
       <div className="absolute inset-0 pointer-events-none z-[1]">

@@ -58,10 +58,12 @@ export function CameraRig() {
     const handleRearWing = () => animateTo(CAMERA_POSITIONS.rearWing);
     const handlePart = (e: Event) => {
       const part = (e as CustomEvent<CarPart>).detail;
+      if (!part?.cameraPosition) return;
       animateTo(part.cameraPosition);
     };
     const handleChapter = (e: Event) => {
       const chapter = (e as CustomEvent<Chapter>).detail;
+      if (!chapter?.cameraPosition) return;
       animateTo(chapter.cameraPosition);
     };
 
